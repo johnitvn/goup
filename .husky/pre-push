@@ -1,0 +1,2 @@
+npx nx affected -t container
+npx nx run-many -t test, e2e

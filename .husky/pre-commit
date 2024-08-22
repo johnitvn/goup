@@ -1,0 +1,4 @@
+npx nx affected -t lint --fix --outputStyle static
+npx nx affected -t style-lint --fix
+npx nx affected -t i18n-extract
+npx lint-staged --relative

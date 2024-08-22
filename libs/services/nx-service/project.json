@@ -1,0 +1,41 @@
+{
+  "name": "nx-service",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/services/nx-service/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/services/nx-service",
+        "main": "libs/services/nx-service/src/index.ts",
+        "tsConfig": "libs/services/nx-service/tsconfig.lib.json",
+        "assets": [
+          "libs/services/nx-service/*.md",
+          {
+            "input": "./libs/services/nx-service/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/services/nx-service/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/services/nx-service",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/services/nx-service",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    }
+  }
+}

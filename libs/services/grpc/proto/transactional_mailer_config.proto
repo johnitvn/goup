@@ -1,0 +1,157 @@
+syntax = "proto3";
+
+package transactional_mailer_config;
+
+// Định nghĩa các message
+message SmtpConfig {
+  string id = 1;                // Unique identifier for the SMTP config
+  string name = 2;              // Name of the SMTP configuration
+  string host = 3;              // SMTP server host address
+  int32 port = 4;               // SMTP server port number
+  string username = 5;          // Username for SMTP authentication
+  string password = 6;          // Password for SMTP authentication
+  bool secure = 7;              // Whether to use secure connection (SSL/TLS)
+  int32 dailyQuota = 8;         // Daily quota for sending emails
+  string dailyQuotaTimezone = 9; // Timezone for calculating daily quota
+  int32 maxSpeed = 10;           // Maximum speed (emails per second) for sending
+  bool isActivated = 11;        // Whether the SMTP configuration is activated
+}
+
+// Request to create a new SMTP configuration
+message CreateSmtpConfigRequest {
+  string name = 1;              // Name of the SMTP configuration
+  string host = 2;              // SMTP server host address
+  int32 port = 3;               // SMTP server port number
+  string username = 4;          // Username for SMTP authentication
+  string password = 5;          // Password for SMTP authentication
+  bool secure = 6;              // Whether to use secure connection (SSL/TLS)
+  int32 dailyQuota = 7;         // Daily quota for sending emails
+  string dailyQuotaTimezone = 8; // Timezone for calculating daily quota
+  int32 maxSpeed = 9;           // Maximum speed (emails per second) for sending
+  bool isActivated = 10;        // Whether the SMTP configuration is activated
+}
+
+// Response with the created SMTP configuration
+message CreateSmtpConfigResponse {
+  SmtpConfig config = 1;        // The newly created SMTP configuration
+}
+
+// Request to get detailed information of an SMTP configuration by id
+message GetSmtpConfigRequest {
+  string id = 1;                // Unique identifier of the SMTP config to retrieve
+}
+
+// Response with the detailed SMTP configuration
+message GetSmtpConfigResponse {
+  SmtpConfig config = 1;        // Detailed SMTP configuration information
+}
+
+// Request to update existing SMTP configurations
+message UpdateSmtpConfigRequest {
+  repeated string ids = 1;      // List of SMTP config ids to update
+  string host = 2;              // Updated SMTP server host address
+  int32 port = 3;               // Updated SMTP server port number
+  string username = 4;          // Updated username for SMTP authentication
+  string password = 5;          // Updated password for SMTP authentication
+  bool secure = 6;              // Whether to use secure connection (SSL/TLS)
+  int32 dailyQuota = 7;         // Updated daily quota for sending emails
+  string dailyQuotaTimezone = 8; // Updated timezone for daily quota calculation
+  int32 maxSpeed = 9;           // Updated maximum speed for sending emails
+  bool isActivated = 11;        // Whether the SMTP configuration is activated
+}
+
+// Response with the updated SMTP configuration
+message UpdateSmtpConfigResponse {
+  repeated SmtpConfig configs = 1; // List of updated SMTP configurations
+}
+
+// Request to delete SMTP configurations
+message DeleteSmtpConfigRequest {
+  repeated string ids = 1;      // List of SMTP config ids to delete
+}
+
+// Response with a confirmation message for deletion
+message DeleteSmtpConfigResponse {
+  bool acknowledged =  1;      // Indicates whether this write result was acknowledged. If not, then all other members of this result will be undefined.
+  int32 deletedCount = 2;     // The number of documents that were deleted.
+}
+
+// Response with a list of all SMTP configurations
+message ListSmtpConfigResponse {
+  repeated SmtpConfig configs = 1; // List of all SMTP configurations
+}
+
+// Request to verify an SMTP configuration by id
+message VerifySmtpConfigRequest {
+  string id = 1;                // Unique identifier of the SMTP config to verify
+}
+
+// Response with the result of the verification (success or failure)
+message VerifySmtpConfigResponse {
+  bool success = 1;             // Whether the SMTP config verification was successful
+  string message = 2;           // Message providing details about the verification result
+}
+
+// Request to send a test email using a specific SMTP configuration
+message SendTestEmailRequest {
+  string id = 1;                // Unique identifier of the SMTP config to use for sending
+  string content = 2;           // Content of the test email
+  string toEmail = 3;           // Recipient email address for the test email
+}
+
+// Response with the result of the test email sending (success or failure)
+message SendTestEmailResponse {
+  bool success = 1;             // Whether the test email was sent successfully
+  string message = 2;           // Message providing details about the test email result
+}
+
+// Request to mark an SMTP configuration as failed after an email sending error
+message GetNextAvailableSmtpConfigAfterErrorRequest {
+  string id = 1;                // Unique identifier of the failed SMTP config
+}
+
+// Response with the next available SMTP configuration after marking a failed one
+message GetNextAvailableSmtpConfigAfterErrorResponse {
+  SmtpConfig config = 1;        // Updated SMTP configuration after marking an error
+}
+
+// Response with the next available SMTP configuration
+message GetNextAvailableSmtpConfigResponse {
+  SmtpConfig config = 1;        // Next available SMTP configuration for use
+}
+
+message Empty{}
+
+// gRPC Service for managing SMTP configurations for transactional emails
+service TransactionalMailerConfigService {
+  // Create a new SMTP configuration
+  rpc CreateSmtpConfig(CreateSmtpConfigRequest) returns (CreateSmtpConfigResponse);
+
+  // Get detailed SMTP configuration by id
+  rpc GetSmtpConfig(GetSmtpConfigRequest) returns (GetSmtpConfigResponse);
+
+  // Update existing SMTP configurations
+  rpc UpdateSmtpConfig(UpdateSmtpConfigRequest) returns (UpdateSmtpConfigResponse);
+
+  // Delete SMTP configurations
+  rpc DeleteSmtpConfig(DeleteSmtpConfigRequest) returns (DeleteSmtpConfigResponse);
+
+  // List all SMTP configurations
+  rpc ListSmtpConfig(Empty) returns (ListSmtpConfigResponse);
+
+  // Verify an SMTP configuration by id
+  rpc VerifySmtpConfig(VerifySmtpConfigRequest) returns (VerifySmtpConfigResponse);
+
+  // Send a test email using a specific SMTP configuration
+  rpc SendTestEmail(SendTestEmailRequest) returns (SendTestEmailResponse);
+
+  // Mark an SMTP configuration as failed and get the next available one
+  rpc GetNextAvailableSmtpConfigAfterError(GetNextAvailableSmtpConfigAfterErrorRequest) returns (GetNextAvailableSmtpConfigAfterErrorResponse);
+
+  // Get the next available SMTP configuration for use
+  rpc GetNextAvailableSmtpConfig(Empty) returns (GetNextAvailableSmtpConfigResponse);
+
+  // Ping the service to check if it is running
+  rpc Health(Empty) returns (Empty);
+
+}

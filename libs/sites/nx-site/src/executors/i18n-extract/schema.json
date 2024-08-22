@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "Site i18n extract executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "input": {
+      "description": "The you would like to extract strings from. Default is <projectRoot>/src",
+      "type": "string"
+    },
+    "output": {
+      "description": "The path where you would like to save extracted strings. . Default is <projectRoot>/translations.json",
+      "type": "string"
+    },
+    "defaultLanguage": {
+      "description": "The default language of the application. Default is en",
+      "type": "string",
+      "default": "en"
+    },
+    "ignoreKeys": {
+      "description": "Keys to ignore",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": []
+}

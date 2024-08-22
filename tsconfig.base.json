@@ -1,0 +1,33 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@goup/common-initializer": ["libs/sites/common-initializer/src/index.ts"],
+      "@goup/common-types": ["libs/common/common-types/src/index.ts"],
+      "@goup/grpc": ["libs/services/grpc/src/index.ts"],
+      "@goup/ng-authentication": ["libs/sites/ng-authentication/src/index.ts"],
+      "@goup/ng-form-control-error": ["libs/sites/ng-form-control-error/src/index.ts"],
+      "@goup/ng-initializer": ["libs/sites/ng-initializer/src/index.ts"],
+      "@goup/ng-system-url": ["libs/sites/ng-system-url/src/index.ts"],
+      "@goup/ng-translator": ["libs/sites/ng-translator/src/index.ts"],
+      "@goup/ng-ui": ["libs/sites/ng-ui/src/index.ts"],
+      "@goup/nx-service": ["libs/services/nx-service/src/index.ts"],
+      "@goup/nx-site": ["libs/sites/nx-site/src/index.ts"],
+      "@goup/service-logger": ["libs/services/service-logger/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

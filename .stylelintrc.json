@@ -1,0 +1,69 @@
+{
+  "ignoreFiles": ["**/*"],
+  "overrides": [
+    {
+      "files": ["**/*.css"],
+      "extends": ["stylelint-config-standard", "stylelint-config-tailwindcss"],
+      "plugins": ["stylelint-order"],
+      "rules": {
+        "order/order": [
+          "custom-properties",
+          "dollar-variables",
+          "at-rules",
+          "declarations",
+          {
+            "type": "at-rule",
+            "name": "tailwind"
+          },
+          {
+            "type": "at-rule",
+            "name": "apply"
+          },
+          {
+            "type": "at-rule",
+            "name": "variants"
+          },
+          {
+            "type": "at-rule",
+            "name": "responsive"
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*.scss"],
+      "extends": ["stylelint-config-standard-scss", "stylelint-config-tailwindcss/scss"],
+      "plugins": ["stylelint-order"],
+      "rules": {
+        "order/order": [
+          "custom-properties",
+          "dollar-variables",
+          "at-rules",
+          "declarations",
+          {
+            "type": "at-rule",
+            "name": "tailwind"
+          },
+          {
+            "type": "at-rule",
+            "name": "apply"
+          },
+          {
+            "type": "at-rule",
+            "name": "variants"
+          },
+          {
+            "type": "at-rule",
+            "name": "responsive"
+          }
+        ]
+      }
+    }
+  ],
+  "rules": {
+    "color-hex-length": "short",
+    "selector-class-pattern": "^[a-z][a-zA-Z0-9]+$",
+    "max-nesting-depth": 3,
+    "no-unknown-animations": true
+  }
+}

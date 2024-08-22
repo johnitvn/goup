@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "microservice": {
+      "factory": "./src/generators/microservice/generator",
+      "schema": "./src/generators/microservice/schema.json",
+      "description": "libs/services/nx-service/src/generators/microservice/microservice generator"
+    }
+  }
+}
