@@ -1,0 +1,2 @@
+npx nx run-many -t test
+npx nx run-many -t e2e
