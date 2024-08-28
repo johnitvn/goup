@@ -28,5 +28,11 @@ jobs:
       - name: Build
         run: npx nx run-many -t build
 
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start external dependencies
+        run: docker compose -f docker/local/docker-compose.yml up nginx redis mongodb rabbitmq maildev s3 s3-setup -d --wait
+
       - name: E2E Test
-        run: npx nx run-many -t e2e --parallel=false
+        run: npx nx run-many -t e2e

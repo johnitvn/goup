@@ -7,4 +7,6 @@
 /.nx/workspace-data
 /.pnpm-store
 /.angular
+pnpm-lock.yaml
 
+.angular

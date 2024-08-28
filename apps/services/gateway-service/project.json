@@ -1,0 +1,59 @@
+{
+  "name": "gateway-service",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/services/gateway-service/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/services/gateway-service",
+        "main": "apps/services/gateway-service/src/main.ts",
+        "tsConfig": "apps/services/gateway-service/tsconfig.app.json",
+        "assets": [
+          {
+            "input": "libs/services/grpc/proto",
+            "glob": "**/*.proto",
+            "output": "/proto/"
+          }
+        ],
+        "webpackConfig": "apps/services/gateway-service/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "staging": {
+          "generatePackageJson": true
+        },
+        "production": {
+          "generatePackageJson": true
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "gateway-service:build",
+        "runBuildTargetDependencies": false,
+        "inspect": false,
+        "runtimeArgs": ["--no-deprecation"]
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "gateway-service:build:development"
+        },
+        "staging": {
+          "buildTarget": "gateway-service:build:staging"
+        },
+        "production": {
+          "buildTarget": "gateway-service:build:production"
+        }
+      }
+    }
+  }
+}

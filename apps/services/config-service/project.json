@@ -1,0 +1,65 @@
+{
+  "name": "config-service",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/services/config-service/src",
+  "implicitDependencies": ["home-site"],
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/services/config-service",
+        "main": "apps/services/config-service/src/main.ts",
+        "tsConfig": "apps/services/config-service/tsconfig.app.json",
+        "assets": [
+          {
+            "input": "libs/services/grpc/proto",
+            "glob": "**/*.proto",
+            "output": "/proto/"
+          },
+          {
+            "input": "apps/sites",
+            "glob": "*/i18n-default.json",
+            "output": "/translation/"
+          }
+        ],
+        "webpackConfig": "apps/services/config-service/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "staging": {
+          "generatePackageJson": true
+        },
+        "production": {
+          "generatePackageJson": true
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "config-service:build",
+        "runBuildTargetDependencies": false,
+        "inspect": false,
+        "runtimeArgs": ["--no-deprecation"]
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "config-service:build:development"
+        },
+        "staging": {
+          "buildTarget": "config-service:build:staging"
+        },
+        "production": {
+          "buildTarget": "config-service:build:production"
+        }
+      }
+    }
+  }
+}

@@ -14,7 +14,14 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@goup/await-timeout": ["libs/common/await-timeout/src/index.ts"],
+      "@goup/common-initializer": ["libs/sites/common-initializer/src/index.ts"],
+      "@goup/common-types": ["libs/common/common-types/src/index.ts"],
+      "@goup/grpc": ["libs/services/grpc/src/index.ts"],
+      "@goup/service-logger": ["libs/services/service-logger/src/index.ts"],
+      "@goup/sleep": ["libs/common/sleep/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

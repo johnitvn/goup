@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "keysOnViews": "error",
+    "zombieKeys": "error",
+    "emptyKeys": "error",
+    "deepSearch": "enable",
+    "maxWarning": "0",
+    "misprintKeys": "disable",
+    "misprintCoefficient": "0.9",
+    "ignoredKeys": [],
+    "ignoredMisprintKeys": [],
+    "customRegExpToFindKeys": ["(?<=marker\\(['\"])([A-Za-z0-9_\\-.]+)(?=['\"]\\))"]
+  },
+  "project": "./src/app/**/*.{html,ts}",
+  "languages": "./i18n-default.json"
+}

@@ -1,7 +1,6 @@
 {
-  "name": "Goup Development Container",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "runArgs": ["--name", "goup-development-container"],
+  "name": "Goup",
+  "image": "mcr.microsoft.com/playwright:jammy",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "version": "latest",
@@ -19,46 +18,38 @@
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/git-lfs:1": {}
   },
+  "runArgs": ["--name", "goup-devcontainer", "--privileged"],
+  "appPort": [80],
   "remoteUser": "root",
-  "mounts": [
-    "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
-    "source=${localWorkspaceFolderBasename}-pnpm-store,target=${containerWorkspaceFolder}/.pnpm-store,type=volume",
-    "source=${localWorkspaceFolderBasename}-ms-playwright-cache,target=/root/.cache/ms-playwright,type=volume"
-  ],
-  "postCreateCommand": "docker compose up -d && pnpm i && pnpx playwright install --with-deps",
-  "containerEnv": {
-    "CHOKIDAR_USEPOLLING": "true"
+  "mounts": ["source=goup-dind,target=/var/lib/docker,type=volume"],
+  "postCreateCommand": {
+    "install node dependencies": "pnpm install",
+    "start docker for local development enviroment": "docker compose -f docker/local/docker-compose.yml up -d"
   },
-  // "forwardPorts": [],
+  "containerEnv": {
+    "CHOKIDAR_USEPOLLING": "true",
+    "NX_DAEMON": "true"
+  },
   "customizations": {
     "vscode": {
       "extensions": [
-        "Postman.postman-for-vscode",
-        "nrwl.angular-console",
         "firsttris.vscode-jest-runner",
-        "ms-playwright.playwright",
         "stylelint.vscode-stylelint",
-        "ms-azuretools.vscode-docker",
         "eamodio.gitlens",
-        "hediet.vscode-drawio",
         "stringham.move-ts",
         "christian-kohler.npm-intellisense",
         "pmneo.tsimporter",
-        "dskwrk.vscode-generate-getter-setter",
         "christian-kohler.path-intellisense",
-        "stivo.tailwind-fold",
         "bradlc.vscode-tailwindcss",
         "angular.ng-template",
-        "cyrilletuzi.angular-schematics",
-        "postman.postman-for-vscode",
-        "ms-vscode-remote.remote-containers",
         "editorconfig.editorconfig",
         "github.vscode-github-actions",
         "vincaslt.highlight-matching-tag",
-        "DigitalBrainstem.javascript-ejs-support",
         "esbenp.prettier-vscode",
-        "mongodb.mongodb-vscode",
-        "mikestead.dotenv"
+        "redhat.vscode-xml",
+        "redhat.vscode-yaml",
+        "zxh404.vscode-proto3",
+        "GitHub.copilot"
       ]
     }
   }

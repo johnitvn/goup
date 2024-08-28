@@ -1,0 +1,9 @@
+{
+  "name": "await-timeout",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/common/await-timeout/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project await-timeout --web",
+  "targets": {}
+}

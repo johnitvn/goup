@@ -1,0 +1,60 @@
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo:4.4
+    ports:
+      - 27017:27017/tcp
+    restart: unless-stopped
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
+    ports:
+      - 6379:6379/tcp
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli ping | grep PONG']
+      interval: 1s
+      timeout: 3s
+      retries: 5
+
+  s3:
+    container_name: s3
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+    ports:
+      - 9000:9000/tcp
+      - 9001:9001/tcp
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    healthcheck:
+      test: 'mc ready local'
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  s3-setup:
+    image: minio/mc
+    container_name: s3-setup
+    restart: unless-stopped
+    depends_on:
+      s3:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config;
+      /usr/bin/mc config host add s3 http://s3:9000 minioadmin minioadmin;
+      /usr/bin/mc mb --region vn-hn-1 -p s3/goup;
+      tail -f /dev/null
+
+  static-asset-service:
+    image: johnitvn/static-asset-service:edge
+    ports:
+      - '80:80'

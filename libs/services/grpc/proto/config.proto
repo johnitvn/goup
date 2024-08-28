@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package config;
+
+// ConfigService provides methods to retrieve configuration settings.
+service ConfigService {
+  rpc getActiveLanguages(GetActiveLanguagesRequest) returns (GetActiveLanguagesResponse);
+  rpc getServiceTranlations(GetServiceTranlationsRequest) returns (GetServiceTranlationsResponse);
+  rpc getBranding(GetBrandingRequest) returns (GetBrandingResponse);
+}
+
+message GetActiveLanguagesRequest{}
+message GetActiveLanguagesResponse {
+  repeated ActiveLanguage languages = 1;
+}
+message ActiveLanguage {
+  required string code = 1;
+  required string title = 2;
+  required bool isDefault = 3;
+}
+
+
+message GetBrandingRequest{}
+message GetBrandingResponse{
+  required string companyName = 1;
+  required string projectName = 2;
+  required string primaryColor = 3;
+  required string primaryColorHover = 4;
+  required string primaryColorPressed = 5;
+  required string accentColor = 6;
+  required string accentColorHover = 7;
+  required string accentColorPressed = 8;
+}
+
+
+message GetServiceTranlationsRequest{
+  required string service = 1;
+  required string language = 2;
+}
+
+message GetServiceTranlationsResponse{
+  repeated Translation translations = 1;
+}
+
+message Translation {
+  required string key = 1;
+  required string value = 2;
+}
