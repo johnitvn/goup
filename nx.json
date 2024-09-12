@@ -15,18 +15,8 @@
     "sharedGlobals": []
   },
   "plugins": [
-    {
-      "plugin": "@nx/jest/plugin",
-      "options": {
-        "targetName": "test"
-      }
-    },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "eslint:lint"
-      }
-    }
+    { "plugin": "@nx/jest/plugin", "options": { "targetName": "test" } },
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "eslint:lint" } }
   ],
   "targetDefaults": {
     "@angular-devkit/build-angular:application": {
@@ -42,14 +32,8 @@
       "style": "scss",
       "unitTestRunner": "jest"
     },
-    "@nx/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nx/angular:component": {
-      "style": "scss",
-      "inlineTemplate": true,
-      "inlineStyle": true
-    }
-  }
+    "@nx/angular:library": { "linter": "eslint", "unitTestRunner": "jest" },
+    "@nx/angular:component": { "style": "scss", "inlineTemplate": true, "inlineStyle": true }
+  },
+  "nxCloudAccessToken": "YjExOTU4MWEtNjc4OC00NzFmLTllMTYtNTNkNmZhYWRmYjIwfHJlYWQtd3JpdGU="
 }
