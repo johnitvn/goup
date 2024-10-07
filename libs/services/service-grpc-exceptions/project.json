@@ -1,0 +1,9 @@
+{
+  "name": "service-grpc-exceptions",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/services/service-grpc-exceptions/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project service-grpc-exceptions --web",
+  "targets": {}
+}

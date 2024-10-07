@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package v1;
+
+import "common/empty.proto";
+import "common/listing.proto";
+import "common/operating.proto";
+
+message Translation {
+  string id = 1;
+  string service = 2;
+  string languageCode = 3;
+  string key = 4;
+  string value = 5;
+}
+
+message Translations {
+  v1.Translation translation = 1;
+}
+
+
+service TranslationManagementService {
+  rpc ListTranslations(v1.Listing) returns (Translations);
+  rpc AddTranslations(Translations) returns (Translations);
+  rpc UpdateTranslation(Translations) returns (Translations);
+}
+

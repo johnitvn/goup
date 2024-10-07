@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package v1;
+
+// Enum representing filter operators
+enum FilterOperator {
+  EQUAL = 0;             // Check for equality
+  NOT_EQUAL = 1;         // Check for inequality
+  GREATER_THAN = 2;      // Check for greater than
+  LESS_THAN = 3;         // Check for less than
+  IN = 4;                // Check if in a list of values
+  NOT_IN = 5;            // Check if not in a list of values
+  BETWEEN = 6;           // Check if within a range of values (requires from and to fields)
+  SEARCH = 7;            // Search by keyword
+  IS_NULL = 8;           // Check if field value is null
+  IS_NOT_NULL = 9;       // Check if field value is not null
+  IS_NOT_EMPTY_STRING = 10;     // Check if field value is not empty string
+}
+
+// Definition of filter conditions for queries
+message Filtering {
+  string field = 1;            // Name of the field to filter
+  FilterOperator operator = 2; // Operator to apply (EQUAL, GREATER_THAN, LESS_THAN, IN, etc.)
+  string stringValue = 3;     // Value used for single operators (EQUAL, GREATER_THAN, LESS_THAN)
+  int64 numberValue = 4;     // Value used for single operators (EQUAL, GREATER_THAN, LESS_THAN)
+  repeated string stringValues = 5;  // Used for IN operator (values to filter)
+  repeated int64 numberValues = 6;  // Used for IN operator (values to filter)
+  int64 from = 7;              // Start value (used for BETWEEN)
+  int64 to = 8;                // End value (used for BETWEEN)
+  string keyword = 9;          // Keyword for search (used for SEARCH)
+}
+
+message SyntheticField {
+  repeated string fields = 1;
+}

@@ -1,0 +1,9 @@
+{
+  "name": "service-translator",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/services/service-translator/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project service-translator --web",
+  "targets": {}
+}

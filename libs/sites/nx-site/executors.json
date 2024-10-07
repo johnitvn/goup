@@ -1,9 +1,0 @@
-{
-  "executors": {
-    "i18n-extract": {
-      "implementation": "./src/executors/i18n-extract/executor",
-      "schema": "./src/executors/i18n-extract/schema.json",
-      "description": "site i18n extract executor"
-    }
-  }
-}

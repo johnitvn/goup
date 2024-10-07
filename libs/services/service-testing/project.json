@@ -1,0 +1,9 @@
+{
+  "name": "service-testing",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/services/service-testing/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project service-testing --web",
+  "targets": {}
+}

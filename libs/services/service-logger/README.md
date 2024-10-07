@@ -1,23 +1,23 @@
 # service-logger
 
-Đây là thư viện sử viện dành cho việc logging trong các service được viết bằng nestjs
+This is a logging library for services written in NestJS.
 
-# Thay thế log mặc định của nestjs
+# Replacing the default NestJS logger
 
-chỉ đơn giản là cấu hình instance của `LoggerService` vào options khi bạn khởi tạo ứng dụng. Và có thể dùng `LogService` để ghi log luôn trong file main.ts
+Simply configure an instance of `EliteLoggerService` in the options when you initialize the application. You can also use `EliteLoggerService` to log directly in the main.ts file.
 
 ```typescript
-const logger = new LoggerService();
+const logger = new EliteLoggerService();
 const app = await NestFactory.create(AppModule, { logger });
 logger.log(`Starting application...`, 'Bootstrap');
 ```
 
-Có thể sử dụng trực tiếp `LoggerService` bằng cách thêm nó vào provider của root module (thường là AppModule)
+You can use `EliteLoggerService` directly by adding it to the provider of the root module (usually AppModule).
 
 ```typescript
-@Module({ providers: [LoggerService] })
+@Module({ providers: [EliteLoggerService] })
 class AppModule implements OnModuleInit {
-  constructor(private logger: LoggerService) {}
+  constructor(private logger: EliteLoggerService) {}
 
   onModuleInit() {
     this.logger.log('Noop log message', 'AppModule');
@@ -25,14 +25,14 @@ class AppModule implements OnModuleInit {
 }
 ```
 
-Tuy nhiên theo cấu trúc log mặc định của Nestjs thì parrams cuối cùng luôn là context. Như vậy sẽ hơi mất công và lặp lại code rất nhiều. Vì lý do đó tôi đã tạo một lớp khác là lớp `Logger`. Bạn chỉ cần khởi ạo instance của Logger với các context khác nhau được chỉ định trong tham số đầu vào
+However, according to the default logging structure of NestJS, the last parameter is always the context. This can be cumbersome and repetitive. For this reason, I created another class called `EliteLogger`. You just need to create an instance of EliteLogger with different contexts specified in the input parameter.
 
 ```typescript
-import { Logger } from '@goup/service-logger';
+import { EliteLogger } from '@goup/service-logger';
 
 @Module({})
 class AppModule implements OnModuleInit {
-  private readonly logger = new Logger('AppModule');
+  private readonly logger = new EliteLogger('AppModule');
 
   onModuleInit() {
     this.logger.log('Noop log message');
@@ -40,16 +40,16 @@ class AppModule implements OnModuleInit {
 }
 ```
 
-_Khuyến khích_:
+_Recommendation_:
 
-- Dùng `LoggerService` để ghi đè logger mặc định của NestJs
-- Dùng `Logger` để ghi log trong ứng dụng của bạn
+- Use `EliteLoggerService` to override the default NestJS logger.
+- Use `EliteLogger` to log within your application.
 
-Trong cách sử dụng này Logger triển khai bằng việc implment các logger function của pino. Nên cách sử dụng giống như cách sử dụng của pino
+In this usage, EliteLogger is implemented by implementing the logger functions of pino. So the usage is similar to that of pino.
 
-Các trường hợp sử dụng (Là tương tự nhau trên tất cả các log function)
+Use cases (Similar across all log functions):
 
-**Chỉ log một thông điệp đơn giản**:
+**Log a simple message**:
 
 ```javascript
 logger.info('Application started');
@@ -65,7 +65,7 @@ logger.info('Application started');
 }
 ```
 
-**Log một thông điệp với giá trị nội suy**:
+**Log a message with interpolation values**:
 
 ```javascript
 logger.info('User %s performed action %s', 'john_doe', 'login');
@@ -81,7 +81,7 @@ logger.info('User %s performed action %s', 'john_doe', 'login');
 }
 ```
 
-**Log một đối tượng kèm thông điệp**:
+**Log an object with a message**:
 
 ```javascript
 logger.info({ user: 'john_doe', action: 'login' }, 'Action performed');
@@ -99,7 +99,7 @@ logger.info({ user: 'john_doe', action: 'login' }, 'Action performed');
 }
 ```
 
-**Log một đối tượng kèm thông điệp và giá trị nội suy**:
+**Log an object with a message and interpolation values**:
 
 ```javascript
 logger.info({ user: 'john_doe' }, 'User %s performed action %s', 'john_doe', 'login');
@@ -116,22 +116,22 @@ logger.info({ user: 'john_doe' }, 'User %s performed action %s', 'john_doe', 'lo
 }
 ```
 
-# Các biến môi trường
+# Environment Variables
 
-| Biến môi trường | Giá trị mặc định | Mô tả                                                                                                  |
-| --------------- | ---------------- | ------------------------------------------------------------------------------------------------------ |
-| `LOG_FORMAT`    | `json`           | Định dạng của log, có thể là `json` hoặc `text`.                                                       |
-| `LOG_LEVEL`     | `info`           | Mức độ log, có thể là `fatal`, `error`, `warn`, `info`, `debug`, hoặc `trace` và `slient` với `slient` |
+| Environment Variable | Default Value | Description                                                                                         |
+| -------------------- | ------------- | --------------------------------------------------------------------------------------------------- |
+| `LOG_FORMAT`         | `json`        | Log format, can be `json` or `text`.                                                                |
+| `LOG_LEVEL`          | `info`        | Log level, can be `fatal`, `error`, `warn`, `info`, `debug`, or `trace` and `silent` with `silent`. |
 
-# Các cấp độ log:
+# Log Levels:
 
 | Level | Method  | Description                                                      |
 | ----- | ------- | ---------------------------------------------------------------- |
-| 10    | `trace` | Thông tin chi tiết nhất, chỉ dành cho mục đích debug rất sâu     |
-| 20    | `debug` | Thông tin debug về luồng xử lý                                   |
-| 30    | `info`  | Thông tin thông thường về hoạt động của hệ thống                 |
-| 40    | `warn`  | Cảnh báo về các sự kiện có thể gây ra lỗi                        |
-| 50    | `error` | Lỗi xảy ra trong hệ thống, nhưng hệ thống vẫn tiếp tục hoạt động |
-| 60    | `fatal` | Lỗi nghiêm trọng, hệ thống không thể tiếp tục hoạt động          |
+| 10    | `trace` | Most detailed information, only for very deep debugging purposes |
+| 20    | `debug` | Debug information about the processing flow                      |
+| 30    | `info`  | General information about system operations                      |
+| 40    | `warn`  | Warnings about events that may cause errors                      |
+| 50    | `error` | Errors occurring in the system, but the system continues to run  |
+| 60    | `fatal` | Critical errors, the system cannot continue to operate           |
 
-Mặc định trong log format là json các level sẽ được ghi dưới dạng số nó giúp cho việc lưu trữ tập trung log cũng như quá trình index được diễn ra đễ dàng hơn.
+By default, in JSON log format, levels are recorded as numbers, which helps with centralized log storage and indexing processes.

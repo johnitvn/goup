@@ -1,0 +1,14 @@
+{
+  "executors": {
+    "i18n-extract": {
+      "implementation": "./src/executors/i18n-extract/executor",
+      "schema": "./src/executors/i18n-extract/schema.json",
+      "description": "site i18n extract executor"
+    },
+    "proto-to-ts": {
+      "implementation": "./src/executors/proto-to-ts/executor",
+      "schema": "./src/executors/proto-to-ts/schema.json",
+      "description": "proto-to-ts executor"
+    }
+  }
+}

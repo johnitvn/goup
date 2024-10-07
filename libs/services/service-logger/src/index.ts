@@ -1,2 +1,3 @@
-export * from './logger';
-export * from './logger-service';
+export * from './elite-logger';
+export * from './elite-logger-service';
+export * from './types';

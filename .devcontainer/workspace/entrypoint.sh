@@ -15,5 +15,8 @@ while [ ! -S /var/run/docker.sock ]; do
 done
 
 
+sleep 3
+echo '{"credsStore": "pass"}' > ~/.docker/config.json
+
 # Now execute any additional commands
 exec "$@"

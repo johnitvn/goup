@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package v1;
+
+// Definition of paging (pagination)
+message Paging {
+  int32 page_number = 1; // Current page
+  string lastId = 2;   // Number of objects per page
+  int32 page_size = 3;   // Number of objects per page
+}

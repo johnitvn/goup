@@ -13,7 +13,6 @@
   "typescript.surveys.enabled": false,
   "remote.autoForwardPorts": false,
   "files.exclude": {
-    ".angular": true,
     ".pnpm-store": true,
     "**/.git": true
   },
@@ -43,6 +42,5 @@
   },
   "[nginx]": {
     "editor.defaultFormatter": "ahmadalli.vscode-nginx-conf"
-  },
-  "eslint.validate": ["json"]
+  }
 }

@@ -1,0 +1,16 @@
+{
+  "name": "@goup/nx-plugin",
+  "version": "0.0.1",
+  "dependencies": {
+    "@nx/devkit": "19.6.5",
+    "tslib": "^2.3.0",
+    "@nx/nest": "19.6.5",
+    "typescript": "~5.4.5"
+  },
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "private": true,
+  "generators": "./generators.json",
+  "executors": "./executors.json"
+}

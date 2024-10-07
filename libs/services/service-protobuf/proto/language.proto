@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package v1;
+
+import "common/empty.proto";
+import "common/listing.proto";
+import "common/operating.proto";
+
+
+enum LanguageStatus {
+  INACTIVE = 0;
+  ACTIVE = 1;
+  PENDING_ACTIVE = 2;
+}
+
+message Language {
+  string id = 1;
+  string code = 2;
+  string name = 3;
+  bool isDefault = 4;
+  LanguageStatus status = 5;
+}
+
+message ActiveLanguage {
+  string id = 1;
+  string code = 2;
+  string name = 3;
+  bool isDefault = 4;
+}
+
+message UpdateLanguage {
+  bool isDefault = 1;
+  LanguageStatus status = 2;
+}
+
+message Languages {
+  repeated v1.Language languages = 1;
+}
+
+
+service LanguageManagementService {
+  rpc ListLanguages(v1.Listing) returns (Languages);
+  rpc UpdateLanguages(UpdateLanguageRequest) returns (Languages);
+}
+
+service ActiveLanguageService {
+  rpc GetActiveLanguages(v1.Empty) returns (ActiveLanguagesResponse);
+}
+
+message UpdateLanguageRequest {
+  repeated string ids = 1;
+  v1.UpdateLanguage language = 2;
+}
+
+message ActiveLanguagesResponse {
+  repeated v1.ActiveLanguage languages = 1;
+}

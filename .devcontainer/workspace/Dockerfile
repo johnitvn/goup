@@ -30,7 +30,7 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
     && apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Install pnpm and nx
-RUN npm install -g pnpm nx
+RUN npm install -g pnpm nx ts-node depcheck
 
 COPY p10k.zsh .p10k.zsh
 
@@ -44,6 +44,11 @@ RUN curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/in
 
 # Install grpcurl
 RUN curl -fsSL "https://github.com/fullstorydev/grpcurl/releases/download/v1.9.1/grpcurl_1.9.1_linux_x86_64.tar.gz" | tar -xz -C /usr/local/bin
+
+# Install docker-credential-helpers
+RUN wget -O docker-credential-pass https://github.com/docker/docker-credential-helpers/releases/download/v0.8.2/docker-credential-pass-v0.8.2.linux-amd64 \
+    && chmod +x docker-credential-pass \
+    && mv docker-credential-pass /usr/local/bin 
 
 # Set default shell
 ENV SHELL /bin/zsh

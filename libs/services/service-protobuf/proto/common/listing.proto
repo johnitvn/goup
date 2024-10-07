@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package v1;
+
+import "paging.proto";
+import "filtering.proto";
+import "sorting.proto";
+
+// Definition of request to get a list of objects (with filtering and pagination)
+message Listing {
+  v1.Paging paging = 1;            // Pagination information
+  repeated v1.Filtering filters = 2;   // List of filter conditions
+  repeated v1.Sorting sorts = 3;       // Fields to sort
+}

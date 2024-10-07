@@ -35,7 +35,7 @@ describe('PinoInstance', () => {
     jest.clearAllMocks(); // clear all mocks
   });
 
-  it('nên implement singleton pattern', () => {
+  it('should implement singleton pattern', () => {
     const pino = require('pino');
 
     const instance1 = PinoInstance.getInstance();
@@ -46,8 +46,8 @@ describe('PinoInstance', () => {
     expect(pino.default).toHaveBeenCalledTimes(1);
   });
 
-  describe('nên khởi tạo', () => {
-    it('nên khởi tạo với các giá trị mặc định', () => {
+  describe('should initialize', () => {
+    it('should initialize with default values', () => {
       delete process.env['LOG_FORMAT'];
       delete process.env['LOG_LEVEL'];
       const pino = require('pino');
@@ -55,8 +55,8 @@ describe('PinoInstance', () => {
       expect(pino.default).toHaveBeenCalledWith({ level: 'info' }, undefined);
     });
 
-    describe('với format', () => {
-      it.each(Object.values(LogFormat).map((v) => [v]))('nên khởi tạo với format %s', (format) => {
+    describe('with format', () => {
+      it.each(Object.values(LogFormat).map((v) => [v]))('should initialize with format %s', (format) => {
         process.env['LOG_FORMAT'] = format;
         const pino = require('pino');
         const instance = PinoInstance.getInstance();
@@ -73,8 +73,8 @@ describe('PinoInstance', () => {
       });
     });
 
-    describe('với level', () => {
-      it.each(Object.values(LogLevel).map((v) => [v]))('nên khởi tạo với log level %s', (level) => {
+    describe('with level', () => {
+      it.each(Object.values(LogLevel).map((v) => [v]))('should initialize with log level %s', (level) => {
         process.env['LOG_LEVEL'] = level;
         const pino = require('pino');
         const instance = PinoInstance.getInstance();
@@ -102,12 +102,12 @@ describe('PinoInstance', () => {
         'LOG_LEVEL environment must be trace, debug, info, warn, error, fatal or silent',
       ],
     ],
-  ])('nên xử lý khi biến môi trường không hợp lệ', (environments, expectedErrors) => {
+  ])('should handle invalid environment variables', (environments, expectedErrors) => {
     let consoleErrorSpy: jest.SpyInstance;
     let processExitSpy: jest.SpyInstance;
 
     beforeAll(() => {
-      consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
       processExitSpy = jest.spyOn(process, 'exit').mockReturnThis();
     });
 
@@ -116,9 +116,9 @@ describe('PinoInstance', () => {
     });
 
     const envVars = environments.map(([envVar]) => envVar).join(', ');
-    it(`nên in ra lỗi lỗi khi ${
-      environments.length === 1 ? 'chỉ mình' : `cả ${environments.length}`
-    } biến môi trường ${envVars} không hợp lệ và dừng ứng dụng với mã lỗi 1`, () => {
+    it(`should log error when ${
+      environments.length === 1 ? 'only' : `both`
+    } environment variable ${envVars} is invalid and terminate the application with exit code 1`, () => {
       for (const [envVar, value] of environments) {
         process.env[envVar] = value;
       }
@@ -131,7 +131,38 @@ describe('PinoInstance', () => {
     });
   });
 
-  describe('ghi log', () => {
+  describe('with LOG_MEMORY', () => {
+    let setIntervalSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      // Spy setInterval trước mỗi test
+      setIntervalSpy = jest.spyOn(global, 'setInterval');
+    });
+
+    afterEach(() => {
+      // Restore setInterval sau mỗi test
+      setIntervalSpy.mockRestore();
+    });
+
+    it.each([
+      [undefined, undefined],
+      ['true', 5000],
+      ['5000', 5000],
+      ['3s', 3000],
+      ['1m', 60000],
+    ])('should initialize with LOG_MEMORY=%s', (logMemory, expectedInterval) => {
+      process.env['LOG_MEMORY'] = logMemory;
+      const instance = PinoInstance.getInstance();
+      expect(instance).toBeInstanceOf(PinoInstance);
+      if (expectedInterval !== undefined) {
+        expect(setIntervalSpy).toHaveBeenCalledWith(expect.any(Function), expectedInterval);
+      } else {
+        expect(setIntervalSpy).not.toHaveBeenCalled();
+      }
+    });
+  });
+
+  describe('logging', () => {
     it.each([
       ['info', 'test message'],
       ['trace', 'trace message'],
@@ -139,10 +170,10 @@ describe('PinoInstance', () => {
       ['warn', 'warn message'],
       ['error', 'error message'],
       ['fatal', 'fatal message'],
-    ])('nên log %s với message: %s', (level, message) => {
+    ])('should log %s with message: %s', (level, message) => {
       const instance = PinoInstance.getInstance();
       const logSpy = jest.spyOn(instance['pinoLogger'], level as Level);
-      instance.write(level as Level, message);
+      instance.write(level as LogLevel, message);
       expect(logSpy).toHaveBeenCalledWith(message);
     });
 
@@ -153,10 +184,10 @@ describe('PinoInstance', () => {
       ['warn', 'warn message', { description: 'warn description' }],
       ['error', 'error message', { description: 'error description' }],
       ['fatal', 'fatal message', { description: 'fatal description' }],
-    ])('nên log %s với message: %s và description: %j', (level, message, description) => {
+    ])('should log %s with message: %s and description: %j', (level, message, description) => {
       const instance = PinoInstance.getInstance();
       const logSpy = jest.spyOn(instance['pinoLogger'], level as Level);
-      instance.write(level as Level, description, message);
+      instance.write(level as LogLevel, description, message);
       expect(logSpy).toHaveBeenCalledWith(description, message);
     });
   });

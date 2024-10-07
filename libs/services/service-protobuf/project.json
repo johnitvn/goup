@@ -1,0 +1,16 @@
+{
+  "name": "service-protobuf",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/services/service-protobuf/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "codegen": {
+      "executor": "@goup/nx-plugin:proto-to-ts",
+      "options": {
+        "input": "proto",
+        "output": "src"
+      }
+    }
+  }
+}

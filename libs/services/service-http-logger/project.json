@@ -1,0 +1,9 @@
+{
+  "name": "service-http-logger",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/services/service-http-logger/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project service-http-logger --web",
+  "targets": {}
+}

@@ -1,21 +1,24 @@
+import { Optional } from '@goup/common-types';
+import { DebugUitls } from '@goup/common-utils';
+import ms from 'ms';
 import pino from 'pino';
 import { PinoPretty as pretty } from 'pino-pretty';
 import { LogFormat, LoggerFn, LogLevel } from './types';
 
 /**
- * @class Pino
- * @description Lớp này cung cấp một singleton logger sử dụng thư viện Pino.
+ * This class provides a singleton logger using the Pino library.
  */
 export class PinoInstance {
   private pinoLogger: pino.Logger;
   private static instance: PinoInstance;
+  public readonly level: LogLevel;
 
   /**
    * @method getInstance
-   * @description Trả về instance duy nhất của lớp Pino.
-   * @returns {PinoInstance} Instance của lớp Pino.
+   * @description Returns the single instance of the Pino class.
+   * @returns {PinoInstance} Instance of the Pino class.
    */
-  public static getInstance() {
+  public static getInstance(): PinoInstance {
     if (!PinoInstance.instance) {
       PinoInstance.instance = new PinoInstance();
     }
@@ -24,19 +27,37 @@ export class PinoInstance {
 
   /**
    * @constructor
-   * @description Khởi tạo một instance mới của lớp Pino. Hàm này là private để đảm bảo rằng chỉ có một instance duy nhất được tạo ra.
+   * @description Initializes a new instance of the Pino class. This method is private to ensure that only one instance is created.
    */
   private constructor() {
-    const { format, level } = this.validateEnviromentVariable();
+    const { format, level, dumpMemoryInteval } = this.validateEnviromentVariable();
+    this.level = level;
     this.pinoLogger = this.createLogger(format, level);
+
+    if (dumpMemoryInteval) {
+      const dumpMemory = () => {
+        const { heapUsed, heapTotal, arrayBuffers, external, rss } = DebugUitls.getMemoryUsageHumanReadable();
+        this.pinoLogger.info(
+          { context: 'MemoryDump' },
+          `Heap: %s / %s | Buffers: %s | External: %s | Rss: %s`,
+          heapUsed,
+          heapTotal,
+          arrayBuffers,
+          external,
+          rss
+        );
+      };
+      dumpMemory();
+      setInterval(dumpMemory, dumpMemoryInteval);
+    }
   }
 
   /**
-   * @method createLogger
-   * @description Tạo một logger mới với các cấu hình được cung cấp.
-   * @param {LogFormat} format - Định dạng log.
-   * @param {LogLevel} level - Mức độ log.
-   * @returns {pino.Logger} Logger được tạo ra.
+   * Creates a pino logger instance with the specified format and log level.
+   *
+   * @param format - The format of the log output. Can be either `LogFormat.TEXT` or another format.
+   * @param level - The log level for the logger. Determines the severity of logs to be captured.
+   * @returns A configured pino logger instance.
    */
   private createLogger(format: LogFormat, level: LogLevel): pino.Logger {
     const options: pino.LoggerOptions = {
@@ -57,26 +78,34 @@ export class PinoInstance {
   }
 
   /**
-   * @method write
-   * @description Ghi log với mức độ và các tham số được cung cấp.
-   * @param {pino.Level} method - Mức độ log (trace, debug, info, warn, error, fatal, silent).
-   * @param {...Parameters<LoggerFn>} args - Các tham số log.
+   * Logs a message using the specified logging method.
+   *
+   * @param method - The logging method to use (e.g., 'info', 'error', etc.).
+   * @param args - The arguments to log, which are parameters of the LoggerFn.
    */
-  public write(method: pino.Level, ...args: Parameters<LoggerFn>) {
+  public write(method: LogLevel, ...args: Parameters<LoggerFn>) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore args are union of tuple types
     this.pinoLogger[method](...args);
   }
 
   /**
-   * @method validateEnviroment
-   * @description Kiểm tra và xác thực các biến môi trường liên quan đến logging.
-   * @returns {Object} Đối tượng chứa các thông tin về format, level
-   * @throws {Error} Nếu các biến môi trường không hợp lệ.
+   * Validates the environment variables related to logging configuration.
+   *
+   * This method checks the `LOG_FORMAT` and `LOG_LEVEL` environment variables to ensure they are set to valid values.
+   * If any of the environment variables are invalid, it logs an error message and exits the process.
+   *
+   * @returns An object containing the validated `format` and `level` properties.
+   *
+   * @throws Will log an error and exit the process if the environment variables are invalid.
+   *
+   * @property {LogFormat} format - The logging format, either 'json' or 'text'.
+   * @property {LogLevel} level - The logging level, one of 'trace', 'debug', 'info', 'warn', 'error', 'fatal', or 'silent'.
    */
   private validateEnviromentVariable(): {
     format: LogFormat;
     level: LogLevel;
+    dumpMemoryInteval: Optional<number>;
   } {
     const errors: Array<string> = [];
 
@@ -97,9 +126,18 @@ export class PinoInstance {
       // exit process
       process.exit(1);
     }
+
+    const dumpMemoryInteval =
+      process.env['LOG_MEMORY'] !== undefined
+        ? process.env['LOG_MEMORY'] === 'true'
+          ? 5000
+          : ms(process.env['LOG_MEMORY'])
+        : undefined;
+
     return {
       format: format as LogFormat,
       level: level as LogLevel,
+      dumpMemoryInteval,
     };
   }
 }

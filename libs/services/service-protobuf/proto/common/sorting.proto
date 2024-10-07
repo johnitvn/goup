@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package v1;
+
+// Enum representing sort directions
+enum SortDirection {
+  ASC = 0;        // Sort in ascending order
+  DESC = 1;       // Sort in descending order
+}
+
+// Definition of sort conditions
+message Sorting {
+   string field = 1;            // Name of the field to sort
+   SortDirection direction = 2; // Sort direction (ASC, DESC)
+}

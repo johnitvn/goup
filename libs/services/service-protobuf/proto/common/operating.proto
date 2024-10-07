@@ -1,0 +1,26 @@
+
+syntax = "proto3";
+
+package v1;
+
+message DeleteOperationResult {
+  bool acknowledged =  1;
+  int32 deletedCount = 2;
+}
+
+message UpdateOperationResult {
+  bool acknowledged =  1;
+  int32 matchedCount = 2;
+  int32 modifiedCount =  3;
+  int32 upsertedCount = 4;
+}
+
+message OperationError {
+  string message = 1;
+  map<string,string> details = 2;
+}
+
+message NoDataOperationResult {
+  bool success = 1;
+  OperationError error = 2;
+}

@@ -1,0 +1,9 @@
+{
+  "name": "service-grpc-logger",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/services/service-grpc-logger/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project service-grpc-logger --web",
+  "targets": {}
+}

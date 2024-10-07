@@ -25,7 +25,10 @@
         "redhat.vscode-yaml",
         "zxh404.vscode-proto3",
         "GitHub.copilot",
-        "shd101wyy.markdown-preview-enhanced"
+        "shd101wyy.markdown-preview-enhanced",
+        "dbaeumer.vscode-eslint",
+        "steoates.autoimport",
+        "ms-vscode.vscode-typescript-next"
       ]
     }
   }

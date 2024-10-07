@@ -1,0 +1,82 @@
+{
+  "name": "language-service",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/services/language-service/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "sourceMap": true,
+        "extractLicenses": false,
+        "outputPath": "dist/apps/services/language-service",
+        "main": "apps/services/language-service/src/main.ts",
+        "tsConfig": "apps/services/language-service/tsconfig.app.json",
+        "assets": [
+          {
+            "input": "libs/services/service-protobuf/proto",
+            "glob": "**/*.proto",
+            "output": "/proto/"
+          },
+          {
+            "input": "apps/services/",
+            "glob": "**/translations.json",
+            "output": "/translations/"
+          }
+        ],
+        "webpackConfig": "apps/services/language-service/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "optimization": false,
+          "generatePackageJson": false
+        },
+        "production": {
+          "optimization": true,
+          "generatePackageJson": true
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "language-service:build",
+        "runBuildTargetDependencies": false,
+        "inspect": false,
+        "runtimeArgs": ["--no-deprecation", "--max-old-space-size=32"]
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "language-service:build:development"
+        },
+        "production": {
+          "buildTarget": "language-service:build:production"
+        }
+      }
+    },
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": ["build"],
+      "options": {
+        "engine": "docker"
+      },
+      "defaultConfiguration": "development",
+      "configurations": {
+        "development": {
+          "tags": ["language-service:local"],
+          "load": true
+        }
+      }
+    },
+    "i18n-extract": {
+      "executor": "@goup/nx-plugin:i18n-extract",
+      "options": {}
+    }
+  }
+}

@@ -1,4 +1,3 @@
-import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Optional } from '@goup/common-types';
@@ -9,8 +8,9 @@ import { SsrCookieService } from 'ngx-cookie-service-ssr';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface Language {
+  id: string;
   code: string;
-  title: string;
+  name: string;
   isDefault: boolean;
 }
 
@@ -31,13 +31,8 @@ export class Translator {
 
   public async initialize(): Promise<void> {
     console.debug('Initializing translator');
-    if (isPlatformBrowser(this.platformId)) {
-      this.subcribeToLangChange();
-      this.featActiveLanguages();
-    } else {
-      await this.subcribeToLangChange();
-      await this.featActiveLanguages();
-    }
+    await this.subcribeToLangChange();
+    await this.featActiveLanguages();
   }
 
   private async subcribeToLangChange(): Promise<void> {
@@ -76,16 +71,11 @@ export class Translator {
     });
   }
 
-  translate(
-    key: string,
-    _defaultValue?: string,
-    _description?: string,
-    interpolateParams?: object
-  ): Observable<string> {
+  translate(key: string, _defaultValue: string, _description?: string, interpolateParams?: object): Observable<string> {
     return this.translateService.get(key, interpolateParams);
   }
 
-  instant(key: string, _defaultValue?: string, _description?: string, interpolateParams?: object): string {
+  instant(key: string, _defaultValue: string, _description?: string, interpolateParams?: object): string {
     return this.translateService.instant(key, interpolateParams);
   }
 
