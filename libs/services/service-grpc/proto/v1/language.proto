@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package v1.language;
+
+import "types/common.proto";
+import "types/listing.proto";
+import "types/operating.proto";
+
+enum LanguageStatus {
+  ACTIVE = 0;           // Ngôn ngữ đang hoạt động
+  INACTIVE = 2;         // Ngôn ngữ chưa được kích hoạt
+}
+
+message Language {
+  string code = 1;          // Mã ngôn ngữ
+  string name = 2;          // Tên ngôn ngữ
+  LanguageStatus status = 3; // Trạng thái ngôn ngữ
+}
+
+message MutilLanguages {
+  repeated Language languages = 1;
+}
+
+message DeleteLanguageRequest {
+  repeated string codes = 1;
+}
+
+service LanguageService {
+  rpc ListLanguages(v1.types.listing.Listing) returns (MutilLanguages); // Danh sách bản dịch
+  rpc AddLanguages(MutilLanguages) returns (v1.types.operating.NoDataOperationResult); // Thêm ngôn ngữ
+  rpc UpdateLanguages(MutilLanguages) returns (v1.types.operating.UpdateOperationResult); // Cập nhật ngôn ngữ
+  rpc DeleteLanguages(DeleteLanguageRequest) returns (v1.types.operating.DeleteOptionResult); // Xóa ngôn ngữ
+}

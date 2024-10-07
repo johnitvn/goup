@@ -1,15 +1,15 @@
 {
-  "name": "grpc",
+  "name": "service-grpc",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/services/grpc/src",
+  "sourceRoot": "libs/services/service-grpc/src",
   "projectType": "library",
   "tags": [],
   "targets": {
     "codegen": {
       "executor": "nx:run-commands",
       "options": {
-        "cwd": "libs/services/grpc",
-        "command": "npx tsproto --path proto -o src/proto -c"
+        "cwd": "libs/services/service-grpc",
+        "command": "npx tsproto --path proto -i proto/includes -o src/proto -c"
       }
     }
   }

@@ -17,7 +17,6 @@
     "paths": {
       "@goup/common-initializer": ["libs/sites/common-initializer/src/index.ts"],
       "@goup/common-types": ["libs/common/common-types/src/index.ts"],
-      "@goup/grpc": ["libs/services/grpc/src/index.ts"],
       "@goup/ng-authentication": ["libs/sites/ng-authentication/src/index.ts"],
       "@goup/ng-form-control-error": ["libs/sites/ng-form-control-error/src/index.ts"],
       "@goup/ng-initializer": ["libs/sites/ng-initializer/src/index.ts"],
@@ -26,6 +25,7 @@
       "@goup/ng-ui": ["libs/sites/ng-ui/src/index.ts"],
       "@goup/nx-service": ["libs/services/nx-service/src/index.ts"],
       "@goup/nx-site": ["libs/sites/nx-site/src/index.ts"],
+      "@goup/service-grpc": ["libs/services/service-grpc/src/index.ts"],
       "@goup/service-logger": ["libs/services/service-logger/src/index.ts"]
     }
   },

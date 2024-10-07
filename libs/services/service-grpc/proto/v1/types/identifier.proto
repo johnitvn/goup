@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package v1.types.identifier;
+
+
+message Identifier {
+  string id = 1;
+}
+
+message IdentifierList {
+  repeated string ids = 1;
+}
+
+

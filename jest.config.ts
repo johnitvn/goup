@@ -11,5 +11,5 @@ export default async () => ({
       statements: 80,
     },
   },
-  coverageReporters: ['text-summary'],
+  coverageReporters: ['text-summary', 'html'],
 });

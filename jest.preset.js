@@ -6,7 +6,7 @@ module.exports = {
   ...nxPreset,
   verbose: true,
   collectCoverageFrom: ['src/**/*.ts'],
-  coverageReporters: ['text', 'html'],
+  coverageReporters: ['text'],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '',
     useESM: true,

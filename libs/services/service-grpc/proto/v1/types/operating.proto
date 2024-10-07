@@ -1,0 +1,30 @@
+
+syntax = "proto3";
+
+package v1.types.operating;
+
+message DeleteOptionResult {
+  bool acknowledged =  1;
+  int32 deletedCount = 2;
+}
+
+message UpdateOperationResult {
+  bool acknowledged =  1;
+  int32 matchedCount = 2;
+  int32 modifiedCount =  3;
+  int32 upsertedCount = 4;
+}
+
+message OperationStatus {
+  bool success = 1;           // Status of the request
+  string message = 2;         // Response message
+}
+
+message OperationError {
+  map<string,string> errors = 2;
+}
+
+message NoDataOperationResult {
+  OperationStatus status =  1;
+  OperationError error =  2;
+}

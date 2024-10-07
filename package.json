@@ -126,6 +126,7 @@
     "eslint": "~8.57.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-playwright": "^0.15.3",
+    "handlebars": "^4.7.8",
     "http-server": "^14.1.1",
     "husky": "^9.1.5",
     "is-ci": "^3.0.1",

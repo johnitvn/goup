@@ -357,6 +357,9 @@ importers:
       eslint-plugin-playwright:
         specifier: ^0.15.3
         version: 0.15.3(eslint@8.57.0)
+      handlebars:
+        specifier: ^4.7.8
+        version: 4.7.8
       http-server:
         specifier: ^14.1.1
         version: 14.1.1

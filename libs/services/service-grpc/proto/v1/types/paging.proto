@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package v1.types.paging;
+
+// Definition of paging (pagination)
+message Paging {
+  int32 page_number = 1; // Current page
+  int32 page_size = 2;   // Number of objects per page
+}
